@@ -47,28 +47,37 @@ Node<T>* add(Node<T>* node, T data) {
 template <typename T>
 Node<T>* remove(Node<T>* node, T data) {
     if (node == nullptr) { return nullptr; }
-    // The element to be deleted is in the left subtree
     if (data < node->data) { node->left = remove(node->left, data); }
-    // The element to be deleted is in the right subtree
     else if (data > node->data) { node->right = remove(node->right, data); }
-    //The item to be deleted is in the root
     else if (node->left != nullptr and node->right != nullptr) { 
-        // The element to be deleted has two child nodes.
-        // Replace it with a minimal element from the right subtree.
-        // Recursively delete this minimal element from the right subtree
         node->data = minimum(node->right)->data;
         node->right = remove(node->right, node->data);
     }
     else
-        // The element to be deleted has one child node
-        // Replace it with a child node
         if (node->left != nullptr) { node = node->left; }
         else if (node->right != nullptr) { node = node->right; }
         else { node = nullptr; }
     return node;
 }
 
+template <typename T>
+Node<T>* search(Node<T>* node, T data) {
+    if (node == nullptr || node->data == data) { return node; }
+    else if (data < node->data) { return search(node->left, data); }
+    else { return search(node->right, data); }
+}
 
+template <typename T>
+Node<T>* minimum(Node<T>* node) {
+    if (node->left == nullptr) { return node; }
+    return minimum(node->left);
+}
+
+template <typename T>
+Node<T>* maximum(Node<T>* node) {
+    if (node->right == nullptr) { return node; }
+    return maximum(node->right);
+}
 
 template <typename T>
 void inorderTraversal(Node<T>* node) {
@@ -97,25 +106,6 @@ void postorderTraversal(Node<T>* node) {
         cout << node->getData() << " ";
 
     }
-}
-
-template <typename T>
-Node<T>* search(Node<T>* node, T data) {
-    if (node == nullptr || node->data == data) { return node; }
-    else if (data < node->data) { return search(node->left, data); }
-    else { return search(node->right, data); }
-}
-
-template <typename T>
-Node<T>* minimum(Node<T>* node) {
-    if (node->left == nullptr) { return node; }
-    return minimum(node->left);
-}
-
-template <typename T>
-Node<T>* maximum(Node<T>* node) {
-    if (node->right == nullptr) { return node; }
-    return maximum(node->right);
 }
 
 int main()
